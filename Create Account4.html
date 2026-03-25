@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account - Boutique Online</title>
+<style>
+*{padding:0;margin:0;box-sizing:border-box;font-family:'Helvetica Neue', Arial,sans-serif;}
+body{background:linear-gradient(120deg,#1a1a1a,#111);min-height:100vh;display:flex;justify-content:center;align-items:center;overflow-y:auto;position:relative;}
+body::after{content:'';position:absolute;width:100%;height:100%;background:radial-gradient(circle at right 70%,#ff4c4c 0%,transparent 60%);clip-path:circle(40% at right 70%);z-index:-1;transition:all 0.5s ease;}
+.container-signup{background:rgba(255,255,255,0.05);padding:40px 30px;border-radius:20px;width:400px;max-width:90%;box-shadow:0 20px 50px rgba(0,0,0,0.5);position:relative;z-index:1;}
+.container-signup h2{color:#fff;font-size:36px;text-align:center;margin-bottom:30px;font-weight:800;}
+.input-group{display:flex;flex-direction:column;margin-bottom:20px;}
+.input-group label{color:#fff;margin-bottom:5px;font-size:16px;}
+.input-group input,.input-group select{padding:12px 15px;border-radius:10px;border:none;outline:none;font-size:16px;background:rgba(255,255,255,0.1);color:#fff;}
+.input-group input::placeholder{color:#ddd;}
+.input-group select option{color:#000;}
+.create-btn{width:100%;padding:12px;border-radius:10px;border:none;background-color:#ff4c4c;color:#fff;font-size:18px;font-weight:700;cursor:pointer;transition:background-color 0.3s, transform 0.2s;}
+.create-btn:hover{background-color:#e80202;transform:scale(1.05);}
+@media(max-width:500px){.container-signup{padding:30px 20px;}.container-signup h2{font-size:28px;}.create-btn{font-size:16px;}body::after{clip-path:circle(50% at bottom);}}
+</style>
+</head>
+<body>
+<div class="container-signup">
+<h2>Create Account</h2>
+<form id="signupForm">
+    <div class="input-group">
+        <label for="email">Email or Phone</label>
+        <input type="text" id="email" name="email" placeholder="Enter your email or phone" required>
+    </div>
+    <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+    </div>
+    <div class="input-group">
+        <label for="role">Role</label>
+        <select id="role" name="role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+        </select>
+    </div>
+    <button type="submit" class="create-btn">Create Account</button>
+</form>
+</div>
+
+<script>
+// حفظ المستخدم في localStorage والدخول مباشرة
+document.getElementById('signupForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    let email = document.getElementById('email').value;
+    let password = document.getElementById('password').value;
+    let role = document.getElementById('role').value;
+
+    // جلب المستخدمين الحاليين أو مصفوفة جديدة
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    // تحقق من عدم وجود نفس البريد مسبقًا
+    if(users.some(u=>u.email===email)){
+        alert('This email/phone is already registered!');
+        return;
+    }
+    users.push({email,password,role});
+    localStorage.setItem('users', JSON.stringify(users));
+
+    // حفظ الدور الحالي
+    localStorage.setItem('role', role);
+    localStorage.setItem('currentUser', email); // لحفظ المستخدم الحالي
+    window.location.href = "dashboard4.html"; // الانتقال مباشرة للصفحة الرئيسية
+});
+</script>
+</body>
+</html>
